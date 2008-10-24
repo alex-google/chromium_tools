@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# upload-git-patch sha1 [issueId]
+#
+# Upload a patch for review
+# To upload a patch to an existing issue pass the issue number as the second argument
+#
+
+sha1=$1
+issue=$2
+
+email=$CHROME_REVIEW_EMAIL
+server="codereview.chromium.org"
+cc="chromium-reviews@googlegroups.com"
+
+title=`git log -1 --pretty="format:%s" $sha1`
+description=`git log -1 --pretty="format:%b" $sha1`
+if [ -z "${issue}" ] ; then
+    upload.py -y -e $email -s $server -t "${title}" -d "${description}" --cc=$cc $sha1^ $sha1
+else
+    upload.py -y -e $email -s $server -t "${title}" -d "${description}" --cc=$cc --issue "${issue}" $sha1^ $sha1
+fi
