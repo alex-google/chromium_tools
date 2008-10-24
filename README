@@ -1,0 +1,50 @@
+Hack on Chromium using Git
+
+# Create an account on http://github if you do not already have one.
+
+# Goto: http://github.com/chromium/chromium/tree/master and fork the project
+
+# Checkout your repository newly forked project
+mkdir chromium
+cd chromium
+git clone git@github.com:[your github user name]/chromium.git
+mv chromium src
+
+# Add chrome to the list of remote repositories so you can fetch off it.
+cd src
+git remote add -f chromium git://github.com/chromium/chromium.git
+
+# Grab the gclient tool rest of the third party source
+svn co http://src.chromium.org/svn/trunk/depot_tools/linux
+linux/gclient config http://src.chromium.org/svn/trunk/src
+cd src
+../linux/gclient sync
+
+# How to build
+cd chromium/src/webkit
+hammer Hammer
+
+# How to update your repository with upstream
+git fetch chromium
+git rebase chromium/master
+../linux/gclient sync
+
+# Grab git-cl and tools for uploading patches
+git clone git://neugierig.org/git-cl.git
+git clone git://github.com/icefox/chromium_tools.git
+
+# Add this to your .profile so everything is in your path and it knows who is uploading the patch
+export CHROME_REVIEW_EMAIL="username@gmail.com"
+export CHROME=$HOME/dev/chromium 
+export PATH=$CHROME/chromium_tools:$CHROME/git-cl/:$CHROME/linux:$PATH
+
+# make a branch
+git checkout -b master testbranch
+
+# make a modification
+cd src
+echo "ME!" >> AUTHORS
+git commit -a -m "Add me to the authors file"
+
+#upload patch, replace sha1 with the sha1 of your commit
+upload-git-patch sha1
