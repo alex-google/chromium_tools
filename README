@@ -46,5 +46,10 @@ cd src
 echo "ME!" >> AUTHORS
 git commit -a -m "Add me to the authors file"
 
-#upload patch, replace sha1 with the sha1 of your commit
+# upload patch, replace sha1 with the sha1 of your commit
 upload-git-patch sha1
+
+# Goto the chromium-dev channel on irc and pester someone to review your change
+
+# Having your own repository you can push up branches and patches independent of the chromium review system.  And it makes it easy to grab patches/branches from other users that have forked off the chromium github repository as git wont re-download all of the files when you add them as a remote source.
+
